@@ -9,7 +9,21 @@
 	<name>kplwriter</name>
 	<url>http://maven.apache.org</url>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+	</properties>
+
 	<build>
+		<resources>
+			<resource>
+				<directory>${project.basedir}</directory>
+				<includes>
+					<include>etc/*</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<!-- 実行可能Jarファイルのビルド -->
 			<plugin>
@@ -20,9 +34,17 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>com.simosan.kclapi.kcllogfetch.SimKinesisConsumeApp</mainClass>
+							<mainClass>com.simosan.kplapi.kplwriter.SimKplWriterMain</mainClass>
 							<classpathPrefix>${project.build.directory}/dependency-jars/</classpathPrefix>
 						</manifest>
+						<manifestEntries>
+							<!-- JARの外でクラスパスを指定（その１：logback.xml用） -->
+							<Class-Path>./logback/</Class-Path>
+						</manifestEntries>
+						<manifestEntries>
+							<!-- JARの外でクラスパスを指定（その２：propertiesファイル用） -->
+							<Class-Path>./properties/</Class-Path>
+						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>
@@ -49,10 +71,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 
 	<dependencies>
 		<dependency>
