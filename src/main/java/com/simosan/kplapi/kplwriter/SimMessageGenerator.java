@@ -1,5 +1,7 @@
 package com.simosan.kplapi.kplwriter;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,7 +27,7 @@ public class SimMessageGenerator {
     	SIM_MSGS.add(new SimMessageVal("きも顔1", "(´◉◞౪◟◉)"));
     	SIM_MSGS.add(new SimMessageVal("きも顔2", "(◉◞౪◟◉｀)"));
     	SIM_MSGS.add(new SimMessageVal("うまー", "( ﾟДﾟ)"));
-    	SIM_MSGS.add(new SimMessageVal("うぇーい", "(☝ ՞ਊ ՞)☝ｳｨｰ"));
+    	SIM_MSGS.add(new SimMessageVal("うぃー", "(☝ ՞ਊ ՞)☝ｳｨｰ"));
     }
 
     private final Random random = new Random();
@@ -41,9 +43,12 @@ public class SimMessageGenerator {
     	SimMessageVal simmsgVal = SIM_MSGS.get(random.nextInt(SIM_MSGS.size()));
     	// idを１個づつインクリメントしつつ、メッセージをオブジェクトで返却する。
     	// Debug
-    	System.out.printf("%s - %s %n",simmsgVal.vulgarLang, simmsgVal.meaning);
+    	Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    	String strtime = sdf.format(currentTime);
+    	System.out.printf("%s - %s - %s %n",strtime, simmsgVal.vulgarLang, simmsgVal.meaning);
     	
-        return new SimMessages(simmsgVal.vulgarLang, simmsgVal.meaning, id.getAndIncrement());
+        return new SimMessages(strtime, simmsgVal.vulgarLang, simmsgVal.meaning, id.getAndIncrement());
     }
 
     /**

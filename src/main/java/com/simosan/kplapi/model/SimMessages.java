@@ -17,16 +17,19 @@ public class SimMessages {
         JSON.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
+    private final String tm;
     private final String vulgarMsg;
     private final String meanIng;
     private final long id;
 
     /**
+     * @param tm	タイムスタンプ
      * @param msg	出力メッセージ
      * @param imi 	メッセージの意味
      * @param id	メッセージ番号
      */
-    public SimMessages(String msg, String imi, long id) {
+    public SimMessages(String tm, String msg, String imi, long id) {
+    	this.tm = tm;
         this.vulgarMsg = msg;
         this.meanIng = imi;
         this.id = id;
@@ -38,7 +41,7 @@ public class SimMessages {
      * @return　IDとメッセージと意味を結合した文字列
      */
     public String getIdAndVulgarMsg() {
-        return id + "-" + vulgarMsg + "-" + meanIng;
+        return tm + "-" + id + "-" + vulgarMsg + "-" + meanIng;
     }
 
     /**
@@ -54,7 +57,7 @@ public class SimMessages {
 
     @Override
     public String toString() {
-        return String.format("ID %d: %s %s", id, vulgarMsg, meanIng);
+        return String.format("ID %s: %d: %s %s", tm, id, vulgarMsg, meanIng);
     }
 	
 }
