@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- アプリ再起動なしでXMLを読み込むようにする -->
+<configuration scan="true" scanPeriod="60 seconds">
+
+	<!-- ログ出力先ディレクトリ -->
+	<property name="logDir" value="/Users/sim/log/" />
+	<!-- KPLSDKログのみ抽出し出力 -->
+	<property name="sdklogfileName" value="kpllog_awssdklog.log" />
+	<!-- 本APログのみ抽出し出力 -->
+	<property name="aplogfileName" value="kpllog_aplog.log" />
+	<!-- ログのタイムスタンプの形式を指定 -->
+	<property name="format1"
+		value="%d{yyyy/MM/dd HH:mm:ss.SSS} [%t] %-6p %c{10} %m%n" />
+
+	<!-- KPLSDKが出力するAPログ（WARNのみでパッケージ絞り込み） -->
+	<appender name="SDK_FILE"
+		class="ch.qos.logback.core.FileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>WARN</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<file>${logDir}${sdklogfileName}</file>
+		<encoder>
+			<pattern>${format1}</pattern>
+		</encoder>
+	</appender>
+	<logger name="software.amazon.awssdk" additivity="false">
+		<appender-ref ref="SDK_FILE" />
+	</logger>
+
+	<!-- 本APが出力するAPログ（INFO以上のみ） -->
+	<appender name="AP_FILE"
+		class="ch.qos.logback.core.FileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+		</filter>
+		<file>${logDir}${aplogfileName}</file>
+		<encoder>
+			<pattern>${format1}</pattern>
+		</encoder>
+	</appender>
+	<logger name="com.simosan">
+		<appender-ref ref="AP_FILE" />
+	</logger>
+
+</configuration>
